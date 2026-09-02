@@ -1,0 +1,16 @@
+from classes import *
+
+c1 = Wallet()
+print(c1.create_account("Malagoli", 0))
+print(c1.deposit("Malagoli", 0, 300))
+print(c1.pay_with_cashback("Malagoli", 20, 150, 10))
+print(c1.top_spenders(0, 1))
+print(c1.get_payment_status("Malagoli", 300, "payment1"))
+print(c1.__dict__)
+print(c1.create_account("Seymour", 0))
+print(c1.deposit("Seymour", 0, 400))
+print(c1.get_payment_status("Seymour", 400, ""))
+print(c1.merge_accounts("Malagoli", "Seymour", 300))
+print(c1.accounts)
+print(c1.top_spenders(0, 1))
+print(c1.__dict__)
