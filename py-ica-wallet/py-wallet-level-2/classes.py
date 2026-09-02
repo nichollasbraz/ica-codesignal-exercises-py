@@ -45,5 +45,9 @@ class Wallet():
 
 
     def top_spenders(self, timestamp: int, n: int) -> list[str]:
-        pass
+        doubles = self.total_spent.items()
+        orderedDoubles = sorted(doubles, key=lambda item: -item[1])
+        result = [account_id for account_id, amount in orderedDoubles]
+        return result
+        
         
