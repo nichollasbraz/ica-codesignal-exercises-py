@@ -2,7 +2,8 @@ class Wallet():
     def __init__(self):
         self.accounts = {}
         self.total_spent = {}
-
+        self.payments = {}
+        self.payment_counter = 0
 
     def create_account(self, account_id: str, timestamp: int) -> bool:
         if account_id in self.accounts:
@@ -11,7 +12,7 @@ class Wallet():
             self.accounts[account_id] = 0
             self.total_spent[account_id] = 0
             return True
-        
+            
 
     def deposit(self, account_id: str, timestamp: int, amount: int) -> int | None:
         if account_id in self.accounts:
@@ -19,8 +20,8 @@ class Wallet():
             return self.accounts[account_id]
         else:
             return None
+            
         
-    
     def withdraw(self, account_id: str, timestamp: int, amount: int) -> int | None:
         if account_id not in self.accounts:
             return None
@@ -50,4 +51,28 @@ class Wallet():
         result = [account_id for account_id, amount in orderedDoubles [:n]]
         return result
 
+
+    def pay_with_cashback(self, account_id: str, timestamp: int, amount: int, cashback_percentage: float) -> str:
+        self.timestamp = timestamp + 1440
+
+        if account_id not in self.accounts:
+            return None
+        if self.accounts[account_id] < amount:
+            return None
+        self.accounts[account_id] -= amount
+        self.total_spent[account_id] += amount
+
+        self.cashback_value = round(amount * cashback_percentage / 100)
+
+        self.payment_counter += 1
+        payment_id = f"payment{self.payment_counter}"
         
+        self.payments[payment_id] = {
+        "account_id": account_id,
+        "cashback_value": self.cashback_value,
+        "cashback_timestamp": self.timestamp,
+        "cashback_status": False
+        }
+        return payment_id
+
+    
