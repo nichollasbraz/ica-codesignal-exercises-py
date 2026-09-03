@@ -57,3 +57,34 @@ class CreditCard():
             "total_purchases": len(self.purchases[card_id])
         }
 
+
+    def top_spending_categories(self, card_id: str, n: int) -> list[tuple[str, int]]:
+        if card_id not in self.accounts:
+            return None
+
+        categories = {}
+
+        for purchase in self.purchases[card_id]:
+            category = purchase["category"]
+            amount = purchase["amount"]
+
+            if category in categories:
+                categories[category] += amount
+            else:
+                categories[category] = amount
+
+        doubles = categories.items()
+        srtDoubles = sorted(doubles, key=lambda item : (-item[1], item[0]))
+        result = srtDoubles[:n]
+
+        return result
+
+
+    def get_purchase_history(self, card_id: str) -> list[dict]:
+        if card_id not in self.accounts:
+            return None
+
+        srtHistory = sorted(self.purchases[card_id], key=lambda item: -item["timestamp"])
+
+        return srtHistory  
+    
