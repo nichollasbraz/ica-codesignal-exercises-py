@@ -4,6 +4,7 @@ class Marketplace():
         self.stores = {}
         self.products = {}
         self.sales = {}
+        self.limits = {}
 
         self.total_revenue = 0
         self.total_products_sold = 0

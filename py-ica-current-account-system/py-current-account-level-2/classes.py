@@ -136,7 +136,7 @@ class CheckingAccount():
                 "timestamp": biggestTimestamp
             }
         
-
+        
 c = CheckingAccount()
 print(c.create_account("malagoli", 0, 2000))
 print(c.get_balance("malagoli"))
