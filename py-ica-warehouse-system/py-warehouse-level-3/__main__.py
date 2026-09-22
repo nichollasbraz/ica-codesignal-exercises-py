@@ -88,7 +88,7 @@ class Warehouse():
             return None
 
         if product_id not in self.products:
-            return self.sales
+            return []
 
         total_sales = []
 
@@ -139,17 +139,64 @@ class Warehouse():
             return total_amount
 
 
-p1 = Warehouse()
-print(p1.create_product("Mouse", "Mouse Logitech", 25))
-print(p1.create_product("Monitor", "Monitor Asus", 11))
-print(p1.__dict__)
-print(p1.add_stock("Mouse", 15))
-print(p1.add_stock("Monitor", 41))
-print(p1.__dict__)
-print(p1.remove_stock("Mouse", 12, 11))
-print(p1.remove_stock("Monitor", 6, 22))
-print(p1.remove_stock("Mouse", 3, 15))
-print(p1.get_product_info("Mouse"))
-print(p1.get_sales_history("Mouse"))
-print(p1.best_seller())
-print(p1.total_revenue())
+    def get_products_by_price(self, min_price: int = 0, max_price: int = 0) -> list[str]:
+        if min_price is None or min_price <= 0:
+            return []
+        if max_price is None or max_price <= 0:
+            return []
+        if max_price < min_price:
+            return []
+
+        products = []
+
+        for product_id in self.products:
+            price = self.products[product_id]["price"]
+
+            if price >= min_price and price <= max_price:
+                products.append(product_id)
+
+        products.sort()
+
+        return products
+
+
+    def get_low_stock_products(self, threshold: int = 0) -> list[dict]:
+        if threshold is None or threshold <= 0:
+            return []
+        else:
+            low_stock = []
+
+            for product_id in self.products:
+                stock = self.products[product_id]["stock"]
+
+                if stock <= threshold:
+                    low_stock_details = {
+                        "product_id": product_id,
+                        "name": self.products[product_id]["name"],
+                        "current_stock": self.products[product_id]["stock"],
+                        "threshold": threshold
+                    }
+                    low_stock.append(low_stock_details)
+
+            return low_stock
+
+
+    def get_sales_by_date_range(self, start_timestamp: int = 0, end_timestamp: int = 0) -> list[dict]:
+        if start_timestamp is None or start_timestamp < 0:
+            return []
+        if end_timestamp is None or end_timestamp < 0:
+            return []
+        if start_timestamp > end_timestamp:
+            return []
+
+        sales_timestamp = []
+
+        for sale in self.sales:
+            timestamp = sale["timestamp"]
+
+            if timestamp >= start_timestamp and timestamp <= end_timestamp:
+                sales_timestamp.append(sale)
+
+        return sales_timestamp
+
+    
