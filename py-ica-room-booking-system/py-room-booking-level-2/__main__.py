@@ -71,6 +71,36 @@ class Cadastro():
         }
         
 
+    def get_room_schedule(self, room_id: str) -> list[dict]:
+        if room_id is None or room_id == "":
+            return None
+        if room_id not in self.rooms:
+            return None
+        if room_id not in self.bookings:
+            return None
+        if len(self.bookings[room_id]) == 0:
+            return []
+        
+        room_schedule = []
+
+        for b in self.bookings[room_id]:
+            user_id = b["user_id"]
+            start = b["start"]
+            end = b["end"]
+            
+            book_info = {
+                "user_id": user_id,
+                "start": start,
+                "end": end
+            }
+        
+            room_schedule.append(book_info)
+
+        srt_schedules = sorted(room_schedule, key=lambda item: item["start"])
+
+        return srt_schedules
+
+
 t = Cadastro()
 
 print(t.create_room("DTC01", "Marvin's Room"))
@@ -80,4 +110,5 @@ print(t.book_room("DTC01", "Drake", 120, 170))
 
 print(t.bookings)
 print(t.get_room_info("DTC01"))
+print(t.get_room_schedule("DTC01"))
         
