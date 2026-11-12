@@ -121,6 +121,7 @@ class Cadastro():
             
         return sorted(user_bookings, key=lambda item: (item["start"], item["room_id"]))
 
+
     def most_booked_room(self) -> str | None:
         if len(self.rooms) == 0:
             return None
