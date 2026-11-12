@@ -96,9 +96,46 @@ class Cadastro():
         
             room_schedule.append(book_info)
 
-        srt_schedules = sorted(room_schedule, key=lambda item: item["start"])
+        return sorted(room_schedule, key=lambda item: item["start"])
 
-        return srt_schedules
+
+    def user_bookings(self, user_id: str) -> list[dict]:
+        if user_id is None or user_id == "":
+            return []
+
+        user_bookings = []
+
+        for room_id in self.bookings:
+            for b in self.bookings[room_id]:
+                if b["user_id"] == user_id:
+                    start = b["start"]
+                    end = b["end"]
+                    
+                    book_info = {
+                        "room_id": room_id,
+                        "start": start,
+                        "end": end
+                    }
+
+                    user_bookings.append(book_info)
+            
+        return sorted(user_bookings, key=lambda item: (item["start"], item["room_id"]))
+
+    def most_booked_room(self) -> str | None:
+        if len(self.rooms) == 0:
+            return None
+
+        total_rooms = []
+
+        for room_id in self.bookings:
+            total_rooms.append((room_id, len(self.bookings[room_id])))
+
+        ranking = sorted(total_rooms, key=lambda item: (-item[1], item[0]))
+
+        if ranking[0][1] == 0:
+            return None
+
+        return ranking[0][0]
 
 
 t = Cadastro()
@@ -106,9 +143,11 @@ t = Cadastro()
 print(t.create_room("DTC01", "Marvin's Room"))
 print(t.create_room("DTC02", "Marvin's Room II", 5))
 print(t.book_room("DTC01", "Drake", 20, 120))
-print(t.book_room("DTC01", "Drake", 120, 170))
+print(t.book_room("DTC01", "Josh", 120, 170))
 
 print(t.bookings)
 print(t.get_room_info("DTC01"))
 print(t.get_room_schedule("DTC01"))
+print(t.user_bookings("Drake"))
+print(t.most_booked_room())
         
